@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a base for the development of a PHP MVC application.
+This project is a base for the development of a PHP MVC application..
 
 ## Pre-requisites
 
