@@ -4,6 +4,16 @@
 
 <p>Filename: <?= htmlspecialchars($file['filename'] ?? '') ?></p>
 <p>Description: <?= htmlspecialchars($file['description'] ?? '') ?></p>
+<form action="/file/update-description" method="post">
+    <div>
+        <label for="new_description">New descriptions:</label>
+        <input type="text" id="new_description" name="new_description">
+    </div>
+    <input type="hidden" name="file_id" value="<?= htmlspecialchars($file['id'] ?? '', ENT_QUOTES) ?>">
+    <input type="hidden" name="csrf" value="<?= $csrf ?? '' ?>" />
+    <button type="submit">Update</button>
+</form>
+
 <p>Size: <?= htmlspecialchars($file['size'] ?? '') ?></p>
 <p>Download count: <?= htmlspecialchars($file['downloadCount'] ?? '') ?></p>
 <p>Created at: <?= htmlspecialchars($file['createdAt'] ?? '') ?></p>

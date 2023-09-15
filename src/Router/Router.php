@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Router
 {
-
     public function run(): void
     {
         $router = new RouteCollector();
@@ -128,6 +127,25 @@ class Router
         $router->post('/dl/{token}', function ($token) {
             $controller = new FileController();
             return $controller->downloadPublicProcess($token);
+        });
+
+        
+        $router->post('/file/update-description', function () {
+            
+            $fileId = $_POST['file_id'];
+            $newDescription = $_POST['new_description'];
+
+            
+            $controller = new FileController();
+            $result = $controller->updateDescription($fileId, $newDescription);
+
+            
+            if ($result) {
+                $response = new RedirectResponse('/file/' . $fileId);
+                return $response->send();
+            } else {
+             
+            }
         });
 
         /**

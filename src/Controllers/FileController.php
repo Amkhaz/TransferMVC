@@ -175,4 +175,41 @@ class FileController extends AbstractController
         $upload = new Upload();
         return $upload->download($file['path'], $file['filename']);
     }
+
+// MAIKL
+    public function updateDescription($id): Response
+    {
+        if (!(new Csrf())->check($this->request->get('csrf'))) {
+            return $this->error('Invalid CSRF token', 400);
+        }
+
+        $newDescription = $this->request->get('new_description');
+
+        if (empty($newDescription)) {
+            return $this->error('New description cannot be empty', 400);
+        }
+
+        $fileModel = new File();
+        $file = $fileModel->get($id);
+
+        if (!$file || $file['user_id'] !== $_SESSION['user']['id']) {
+            return $this->error('File not found or you do not have permission', 404);
+        }
+        print_r($file);
+        // Update the file description
+        if (!$fileModel->update($id, $file['path'], $file['filename'], $newDescription,$file['user_id'], $file['token'], $file['password'], $file['isPublic'],  $file['hasPassword'],  $file['downloadCount'], $file['size'])) {
+            $this->logger->log("Unable to update description for file with id $id");
+            return $this->error('An error occurred', 500);
+        }
+
+        $response = new RedirectResponse('/file/' . $id);
+        return $response;
+    }
+
+
+
 }
+
+
+
+
