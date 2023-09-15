@@ -27,4 +27,12 @@
     <?php endforeach; ?>
 <?php endif; ?>
 
+<?php if (!empty($comments)): ?>
+    <hr/>
+    <p>Comments:</p>
+    <?php foreach ($comments as $comment): ?>
+        <div><?= htmlspecialchars($comment['content']) ?></div>
+    <?php endforeach; ?>
+<?php endif; ?>
+
 <?php include_once __DIR__ . '/../Commons/base_footer.php'; ?>

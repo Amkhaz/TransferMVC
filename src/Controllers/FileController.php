@@ -8,6 +8,7 @@ use App\Services\Message;
 use App\Services\Upload;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\Comment;
 
 class FileController extends AbstractController
 {
@@ -145,11 +146,14 @@ class FileController extends AbstractController
             return $this->error('File not found');
         }
 
+        $commentModel = new Comment();
+
         $response = new Response(
             $this->render('Home/file', [
                 'file' => $file,
                 'messages' => Message::getMessages(),
                 'csrf' => (new Csrf())->generate(),
+                'comments' => $commentModel->getByFile($file['id'])
             ])
         );
         return $response->send();
