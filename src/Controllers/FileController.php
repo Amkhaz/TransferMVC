@@ -24,9 +24,25 @@ class FileController extends AbstractController
             $this->logger->log("Unable to upload file : No file");
             return $this->error('No file uploaded', 400);
         }
-
-        $filename = $file->getClientOriginalName();
+// MAIKL gestion de quotas
         $fileSize = $file->getSize();
+        if ($fileSize > 20 * 1024 * 1024) {
+            $this->logger->log("File size exceeds the 20MB limit");
+            return $this->error('File size exceeds 20MB', 400);
+        }
+    
+        $fileModel = new File();
+        $usedSize = $fileModel->getUsedSize((int)$_SESSION['user']['id']);
+        $totalFileSize = $usedSize + $fileSize;
+       
+
+        if ($totalFileSize > 200 * 1024 * 1024) {
+            $this->logger->log("Total file size exceeds the 200 MB limit");
+            return $this->error("Total file size exceeds 200 MB", 400);
+        }
+        
+        $filename = $file->getClientOriginalName();
+    
 
         $upload = new Upload();
         $path = $upload->upload($file);
@@ -195,7 +211,7 @@ class FileController extends AbstractController
         if (!$file || $file['user_id'] !== $_SESSION['user']['id']) {
             return $this->error('File not found or you do not have permission', 404);
         }
-        print_r($file);
+
         // Update the file description
         if (!$fileModel->update($id, $file['path'], $file['filename'], $newDescription,$file['user_id'], $file['token'], $file['password'], $file['isPublic'],  $file['hasPassword'],  $file['downloadCount'], $file['size'])) {
             $this->logger->log("Unable to update description for file with id $id");

@@ -123,5 +123,10 @@ class File extends AbstractModel
         $query->bindParam(':id', $id, PDO::PARAM_INT);
         return $query->execute();
     }
-
+    public function getUsedSize(int $id): int {
+        $query = $this->pdo->prepare('SELECT SUM(size) FROM file WHERE user_id = :id');
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->execute();
+        return $query->fetch()[0];
+    }
 }
