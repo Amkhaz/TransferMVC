@@ -25,7 +25,7 @@ class Comment extends AbstractModel
 
     public function getByFile(int $fileId): array|bool
     {
-        $query = $this->pdo->prepare('SELECT * FROM comment WHERE file_id = :file_id ORDER BY created_date DESC');
+        $query = $this->pdo->prepare('SELECT comment.*, user.firstname, user.lastname FROM comment INNER JOIN user ON comment.user_id = user.id WHERE comment.file_id = :file_id ORDER BY comment.created_date DESC');
         $query->bindParam(':file_id', $fileId, PDO::PARAM_INT);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -44,7 +44,7 @@ class Comment extends AbstractModel
         int $fileId,
     ): bool
     {
-        $query = $this->pdo->prepare('INSERT INTO comment ( user_id, content, file_id, created_date ) VALUES (:user_id, :content, :file_id, :user_id, :created_date)');
+        $query = $this->pdo->prepare('INSERT INTO comment ( user_id, content, file_id, created_date ) VALUES (:user_id, :content, :file_id, :created_date)');
         return $query->execute([
             'user_id' => $userId,
             'content' => $content,

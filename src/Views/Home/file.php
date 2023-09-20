@@ -31,8 +31,25 @@
     <hr/>
     <p>Comments:</p>
     <?php foreach ($comments as $comment): ?>
+    <p>From <?= htmlspecialchars($comment['firstname'] . ' ' . $comment['lastname']) ?></p>
         <div><?= htmlspecialchars($comment['content']) ?></div>
     <?php endforeach; ?>
+<?php endif; ?>
+
+<h3>Add a comment:</h3>
+
+<?php if ($isConnected ?? false): ?>
+<form action="/comment/add/<?= htmlspecialchars($file['token'] ?? '', ENT_QUOTES) ?>" method="post">
+    <div>
+        <label>
+            <textarea name="content" placeholder="Content" cols="50" rows="10" required></textarea>
+        </label>
+    </div>
+    <input type="hidden" name="csrf" value="<?= $csrf ?? '' ?>" />
+    <button type="submit">Add</button>
+</form>
+<?php else: ?>
+    <p>You must be logged in to add a comment</p>
 <?php endif; ?>
 
 <?php include_once __DIR__ . '/../Commons/base_footer.php'; ?>

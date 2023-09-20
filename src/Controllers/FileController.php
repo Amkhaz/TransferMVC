@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\File;
 use App\Services\Csrf;
 use App\Services\Message;
+use App\Services\Security;
 use App\Services\Upload;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -147,13 +148,15 @@ class FileController extends AbstractController
         }
 
         $commentModel = new Comment();
+        $security = new Security();
 
         $response = new Response(
             $this->render('Home/file', [
                 'file' => $file,
                 'messages' => Message::getMessages(),
                 'csrf' => (new Csrf())->generate(),
-                'comments' => $commentModel->getByFile($file['id'])
+                'comments' => $commentModel->getByFile($file['id']),
+                "isConnected" => $security->isConnected(),
             ])
         );
         return $response->send();

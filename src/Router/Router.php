@@ -2,6 +2,7 @@
 
 namespace App\Router;
 
+use App\Controllers\CommentController;
 use App\Controllers\DashboardController;
 use App\Controllers\FileController;
 use App\Controllers\HomeController;
@@ -128,6 +129,26 @@ class Router
         $router->post('/dl/{token}', function ($token) {
             $controller = new FileController();
             return $controller->downloadPublicProcess($token);
+        });
+
+        $router->post('/comment/add/{token}', function ($token) {
+            if (!Security::isConnected()) {
+                $response = new RedirectResponse('/login');
+                return $response->send();
+            }
+
+            $controller = new CommentController();
+            return $controller->add($token);
+        });
+
+        $router->post('/comment/delete/{id}', function ($id) {
+            if (!Security::isConnected()) {
+                $response = new RedirectResponse('/login');
+                return $response->send();
+            }
+
+            $controller = new CommentController();
+            return $controller->delete($id);
         });
 
         /**
