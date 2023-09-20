@@ -133,18 +133,14 @@ class Router
         $router->post('/file/update-description', function () {
             
             $fileId = $_POST['file_id'];
-            $newDescription = $_POST['new_description'];
-
             
             $controller = new FileController();
-            $result = $controller->updateDescription($fileId, $newDescription);
+            $result = $controller->updateDescription($fileId);
 
             
             if ($result) {
                 $response = new RedirectResponse('/file/' . $fileId);
                 return $response->send();
-            } else {
-             
             }
         });
 

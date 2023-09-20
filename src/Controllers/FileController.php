@@ -11,10 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FileController extends AbstractController
 {
-
+    private $maxFileSize = 20 * 1024 * 1024;
+    private $maxTotalFileSize = 200 * 1024 * 1024;
+ 
     public function upload(): Response
     {
         if (!(new Csrf())->check($this->request->get('csrf'))) {
+            $this->logger->log("Insalid CSRF token");
             return $this->error('Invalid CSRF token', 400);
         }
 
@@ -26,7 +29,7 @@ class FileController extends AbstractController
         }
 // MAIKL gestion de quotas
         $fileSize = $file->getSize();
-        if ($fileSize > 20 * 1024 * 1024) {
+        if ($fileSize > $this->maxFileSize) {
             $this->logger->log("File size exceeds the 20MB limit");
             return $this->error('File size exceeds 20MB', 400);
         }
@@ -35,8 +38,8 @@ class FileController extends AbstractController
         $usedSize = $fileModel->getUsedSize((int)$_SESSION['user']['id']);
         $totalFileSize = $usedSize + $fileSize;
        
-
-        if ($totalFileSize > 200 * 1024 * 1024) {
+       
+        if ($totalFileSize > $this->maxTotalFileSize) {
             $this->logger->log("Total file size exceeds the 200 MB limit");
             return $this->error("Total file size exceeds 200 MB", 400);
         }
@@ -219,7 +222,7 @@ class FileController extends AbstractController
         }
 
         $response = new RedirectResponse('/file/' . $id);
-        return $response;
+        return $response->send();
     }
 
 
