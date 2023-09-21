@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Comment;
 use App\Models\File;
 use App\Services\Csrf;
 use App\Services\Message;
@@ -39,11 +40,15 @@ class DashboardController extends AbstractController
             return $this->error('File not found');
         }
 
+        $commentModel = new Comment();
+        $security = new Security();
+
         $response = new Response(
             $this->render('Dashboard/show', [
                 "file" => $file,
                 "base_url" => $this->config['url'],
                 "csrf" => (new Csrf())->generate(),
+                "comments" => $commentModel->getByFile($id),
             ])
         );
 
