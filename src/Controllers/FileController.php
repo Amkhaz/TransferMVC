@@ -196,32 +196,33 @@ class FileController extends AbstractController
     }
 
 // MAIKL
-    public function updateDescription($id): Response
+    public function updateDescription(): Response
     {
         if (!(new Csrf())->check($this->request->get('csrf'))) {
             return $this->error('Invalid CSRF token', 400);
         }
 
         $newDescription = $this->request->get('new_description');
+        $fileId = $this->request->get('file_id');
 
-        if (empty($newDescription)) {
-            return $this->error('New description cannot be empty', 400);
+        if (empty($newDescription) || empty($fileId)) {
+            return $this->error('Fields cannot be empty', 400);
         }
 
         $fileModel = new File();
-        $file = $fileModel->get($id);
+        $file = $fileModel->get($fileId);
 
         if (!$file || $file['user_id'] !== $_SESSION['user']['id']) {
             return $this->error('File not found or you do not have permission', 404);
         }
 
         // Update the file description
-        if (!$fileModel->update($id, $file['path'], $file['filename'], $newDescription,$file['user_id'], $file['token'], $file['password'], $file['isPublic'],  $file['hasPassword'],  $file['downloadCount'], $file['size'])) {
-            $this->logger->log("Unable to update description for file with id $id");
+        if (!$fileModel->update($fileId, $file['path'], $file['filename'], $newDescription,$file['user_id'], $file['token'], $file['password'], $file['isPublic'],  $file['hasPassword'],  $file['downloadCount'], $file['size'])) {
+            $this->logger->log("Unable to update description for file with id $fileId");
             return $this->error('An error occurred', 500);
         }
 
-        $response = new RedirectResponse('/file/' . $id);
+        $response = new RedirectResponse('/file/' . $fileId);
         return $response->send();
     }
 

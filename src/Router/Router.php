@@ -131,17 +131,13 @@ class Router
 
         
         $router->post('/file/update-description', function () {
-            
-            $fileId = $_POST['file_id'];
-            
-            $controller = new FileController();
-            $result = $controller->updateDescription($fileId);
-
-            
-            if ($result) {
-                $response = new RedirectResponse('/file/' . $fileId);
+            if (!Security::isConnected()) {
+                $response = new RedirectResponse('/login');
                 return $response->send();
             }
+            
+            $controller = new FileController();
+            return $controller->updateDescription();
         });
 
         /**
