@@ -85,5 +85,26 @@ class User extends AbstractModel
         $query->bindParam(':id', $id, PDO::PARAM_INT);
         return $query->execute();
     }
+    public function checkPassword(int $userId, string $password): bool
+    {
+        $user = $this->get($userId);
+        if (!$user) {
+            return false;
+        }
+
+        // Verify the provided password with the one in the database
+        return password_verify($password, $user['password']);
+    }
+
+    public function updatePassword(int $userId, string $newPassword): bool
+    {
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        $query = $this->pdo->prepare('UPDATE user SET password = :password WHERE id = :id');
+        $query->bindParam(':id', $userId, PDO::PARAM_INT);
+        $query->bindParam(':password', $hashedPassword);
+
+        return $query->execute();
+    }
 
 }

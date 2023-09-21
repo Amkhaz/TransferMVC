@@ -41,4 +41,11 @@
 
 <a href="/dashboard">Back to dashboard</a>
 
+<?php if (!empty($messages)): ?>
+    <hr/>
+    <?php foreach ($messages as $message): ?>
+        <div><?= htmlspecialchars($message) ?></div>
+    <?php endforeach; ?>
+<?php endif; ?>
+
 <?php include_once __DIR__ . '/../Commons/base_footer.php'; ?>

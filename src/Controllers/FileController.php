@@ -14,15 +14,32 @@ class FileController extends AbstractController
 
     public function upload(): Response
     {
+        $messageService = new Message();
+
         if (!(new Csrf())->check($this->request->get('csrf'))) {
-            return $this->error('Invalid CSRF token', 400);
+            $messageService->addMessage('Invalid CSRF token');
+            $response = new RedirectResponse('/dashboard');
+            return $response->send();
         }
 
         $file = $this->request->files->get('file');
 
         if (!$file) {
             $this->logger->log("Unable to upload file : No file");
-            return $this->error('No file uploaded', 400);
+            $messageService->addMessage('No file uploaded');
+            $response = new RedirectResponse('/dashboard');
+            return $response->send();
+        }
+
+        // Get the file's extension
+        $fileExtension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+
+        // Convert the extension to lowercase and check if it contains "php"
+        if (str_contains(strtolower($fileExtension), 'php')) {
+            $this->logger->log("Unable to upload file : Files with $fileExtension extension are not allowed");
+            $messageService->addMessage("Files with $fileExtension extension are not allowed");
+            $response = new RedirectResponse('/dashboard');
+            return $response->send();
         }
 
         $filename = $file->getClientOriginalName();
@@ -30,10 +47,14 @@ class FileController extends AbstractController
 
         $upload = new Upload();
         $path = $upload->upload($file);
+
         if (!$path) {
             $this->logger->log("Unable to upload file : File error");
-            return $this->error('An error occurred', 500);
+            $messageService->addMessage('An error occurred during the upload.');
+            $response = new RedirectResponse('/dashboard');
+            return $response->send();
         }
+
 
         $fileModel = new File();
         $result = $fileModel->create(
