@@ -4,10 +4,11 @@
 
 <p>Filename: <?= htmlspecialchars($file['filename'] ?? '') ?></p>
 <p>Description: <?= htmlspecialchars($file['description'] ?? '') ?></p>
+
 <form action="/file/update-description" method="post">
     <div>
         <label for="new_description">New descriptions:</label>
-        <input type="text" id="new_description" name="new_description">
+        <textarea rows="10" cols="50" name="new_description" id="new_description"></textarea>
     </div>
     <input type="hidden" name="file_id" value="<?= htmlspecialchars($file['id'] ?? '', ENT_QUOTES) ?>">
     <input type="hidden" name="csrf" value="<?= $csrf ?? '' ?>" />

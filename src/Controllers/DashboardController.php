@@ -41,7 +41,6 @@ class DashboardController extends AbstractController
         }
 
         $commentModel = new Comment();
-        $security = new Security();
 
         $response = new Response(
             $this->render('Dashboard/show', [

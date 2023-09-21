@@ -132,6 +132,12 @@ class FileController extends AbstractController
             return $this->error('An error occurred', 500);
         }
 
+        $commentModel = new Comment();
+        if (!$commentModel->deleteByFile($id)) {
+            $this->logger->log("Unable to delete comments for file with id $file[id] in database");
+            return $this->error('An error occurred', 500);
+        }
+
         if (!$fileModel->delete($id)) {
             $this->logger->log("Unable to delete file with id $file[id] in database");
             return $this->error('An error occurred', 500);
@@ -221,7 +227,6 @@ class FileController extends AbstractController
         return $upload->download($file['path'], $file['filename']);
     }
 
-// MAIKL
     public function updateDescription(): Response
     {
         if (!(new Csrf())->check($this->request->get('csrf'))) {
@@ -242,8 +247,7 @@ class FileController extends AbstractController
             return $this->error('File not found or you do not have permission', 404);
         }
 
-        // Update the file description
-        if (!$fileModel->update($fileId, $file['path'], $file['filename'], $newDescription,$file['user_id'], $file['token'], $file['password'], $file['isPublic'],  $file['hasPassword'],  $file['downloadCount'], $file['size'])) {
+        if (!$fileModel->updateDescription($fileId, $newDescription, $file['user_id'])) {
             $this->logger->log("Unable to update description for file with id $fileId");
             return $this->error('An error occurred', 500);
         }

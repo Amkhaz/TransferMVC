@@ -127,6 +127,16 @@ class File extends AbstractModel
         $query = $this->pdo->prepare('SELECT SUM(size) FROM file WHERE user_id = :id');
         $query->bindParam(':id', $id, PDO::PARAM_INT);
         $query->execute();
-        return $query->fetch()[0];
+        return $query->fetch()[0] ?? 0;
+    }
+
+    public function updateDescription(int $fileId, string $newDescription, int $user_id): bool
+    {
+        $query = $this->pdo->prepare('UPDATE file SET description = :description WHERE id = :id AND user_id = :user_id');
+        return $query->execute([
+            'id' => $fileId,
+            'description' => $newDescription,
+            'user_id' => $user_id
+        ]);
     }
 }

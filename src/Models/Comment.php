@@ -59,4 +59,11 @@ class Comment extends AbstractModel
         $query->bindParam(':id', $id, PDO::PARAM_INT);
         return $query->execute();
     }
+
+    public function deleteByFile($id): bool
+    {
+        $query = $this->pdo->prepare('DELETE FROM comment WHERE file_id = :id');
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        return $query->execute();
+    }
 }
