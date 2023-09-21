@@ -5,9 +5,11 @@ namespace App\Controllers;
 use App\Models\File;
 use App\Services\Csrf;
 use App\Services\Message;
+use App\Services\Security;
 use App\Services\Upload;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\Comment;
 
 class FileController extends AbstractController
 {
@@ -16,6 +18,8 @@ class FileController extends AbstractController
  
     public function upload(): Response
     {
+        $messageService = new Message();
+
         if (!(new Csrf())->check($this->request->get('csrf'))) {
             $this->logger->log("Insalid CSRF token");
             return $this->error('Invalid CSRF token', 400);
@@ -25,7 +29,20 @@ class FileController extends AbstractController
 
         if (!$file) {
             $this->logger->log("Unable to upload file : No file");
-            return $this->error('No file uploaded', 400);
+            $messageService->addMessage('No file uploaded');
+            $response = new RedirectResponse('/dashboard');
+            return $response->send();
+        }
+
+        // Get the file's extension
+        $fileExtension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+
+        // Convert the extension to lowercase and check if it contains "php"
+        if (str_contains(strtolower($fileExtension), 'php')) {
+            $this->logger->log("Unable to upload file : Files with $fileExtension extension are not allowed");
+            $messageService->addMessage("Files with $fileExtension extension are not allowed");
+            $response = new RedirectResponse('/dashboard');
+            return $response->send();
         }
 // MAIKL gestion de quotas
         $fileSize = $file->getSize();
@@ -49,10 +66,14 @@ class FileController extends AbstractController
 
         $upload = new Upload();
         $path = $upload->upload($file);
+
         if (!$path) {
             $this->logger->log("Unable to upload file : File error");
-            return $this->error('An error occurred', 500);
+            $messageService->addMessage('An error occurred during the upload.');
+            $response = new RedirectResponse('/dashboard');
+            return $response->send();
         }
+
 
         $fileModel = new File();
         $result = $fileModel->create(
@@ -164,11 +185,16 @@ class FileController extends AbstractController
             return $this->error('File not found');
         }
 
+        $commentModel = new Comment();
+        $security = new Security();
+
         $response = new Response(
             $this->render('Home/file', [
                 'file' => $file,
                 'messages' => Message::getMessages(),
                 'csrf' => (new Csrf())->generate(),
+                'comments' => $commentModel->getByFile($file['id']),
+                "isConnected" => $security->isConnected(),
             ])
         );
         return $response->send();

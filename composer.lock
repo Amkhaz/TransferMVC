@@ -128,12 +128,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "d05a04075358d7b8446f9884ec15fcb0136ab012"
+                "reference": "066b73bce5d5baf18f2dfb08a19453947a8828e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/d05a04075358d7b8446f9884ec15fcb0136ab012",
-                "reference": "d05a04075358d7b8446f9884ec15fcb0136ab012",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/066b73bce5d5baf18f2dfb08a19453947a8828e6",
+                "reference": "066b73bce5d5baf18f2dfb08a19453947a8828e6",
                 "shasum": ""
             },
             "require": {
@@ -197,7 +197,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-22T08:21:16+00:00"
+            "time": "2023-09-10T17:19:54+00:00"
         },
         {
             "name": "symfony/mime",
@@ -785,12 +785,14 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "symfony/mime": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "ext-pdo": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
