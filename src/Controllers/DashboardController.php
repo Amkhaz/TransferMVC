@@ -5,7 +5,8 @@ namespace App\Controllers;
 use App\Models\Comment;
 use App\Models\File;
 use App\Services\Csrf;
-use App\Services\Security;
+use App\Services\Message;
+use App\Services\Upload;
 use Symfony\Component\HttpFoundation\Response;
 
 class DashboardController extends AbstractController
@@ -14,12 +15,16 @@ class DashboardController extends AbstractController
     {
         $files = (new File())->getByUser((int)$_SESSION['user']['id']);
 
+        $messageService = new Message();
+
+
         $response = new Response(
             $this->render('Dashboard/index', [
                 "name" => $_SESSION['user']['firstname'],
                 "files" => $files,
                 "csrf_delete" => (new Csrf())->generate(),
-                "csrf_upload" => (new Csrf())->generate()
+                "csrf_upload" => (new Csrf())->generate(),
+                "messages" => $messageService->getMessages()
             ])
         );
 

@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Services\Message;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends AbstractController
@@ -66,6 +68,63 @@ class UserController extends AbstractController
             ])
         );
 
+        return $response->send();
+
+    }
+    public function viewProfile() {
+        // Retrieve the logged-in user's information
+        $userId = $_SESSION['user']['id'];  // Assuming you store user's ID in session when they login.
+        $userModel = new User();
+        $userInfo = $userModel->get($userId);
+
+
+        $messageService = new Message();
+
+        $response = new Response(
+            $this->render('User/user', [
+                'user' => $userInfo,
+                'messages' => $messageService->getMessages()
+
+            ])
+        );
+
+        return $response->send();
+
+        // And so on for other user details you wish to display
+    }
+
+
+    public function changePassword()
+    {
+        $userId = $_SESSION['user']['id'];
+        $userModel = new User();
+
+        $oldPassword = $_POST['old_password'];
+        $newPassword = $_POST['new_password'];
+        $verifyPassword = $_POST['confirm_password'];
+
+        $messageService = new Message();
+
+        // Check if the old password matches the one in the database
+        if (!$userModel->checkPassword($userId, $oldPassword)) {
+            $messageService->addMessage("Old password doesn't match");
+            $response = new RedirectResponse('/user');
+            return $response->send();
+        }
+
+        // Check if the new password matches the verification password
+        if ($newPassword !== $verifyPassword) {
+            $messageService->addMessage("New Password doesn't match");
+            $response = new RedirectResponse('/user');
+            return $response->send();
+        }
+
+        // Update the password in the database
+        $success = $userModel->updatePassword($userId, $newPassword);
+
+
+        $messageService->addMessage($success ? 'Password updated successfully': 'Failed to update password');
+        $response = new RedirectResponse('/user');
         return $response->send();
 
     }

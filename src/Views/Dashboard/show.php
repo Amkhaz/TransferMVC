@@ -52,7 +52,13 @@
             <input type="hidden" name="csrf" value="<?= $csrf ?? '' ?>" />
             <button type="submit">Delete</button>
         </form>
+    <?php endforeach; ?>
+<?php endif; ?>
 
+<?php if (!empty($messages)): ?>
+    <hr/>
+    <?php foreach ($messages as $message): ?>
+        <div><?= htmlspecialchars($message) ?></div>
     <?php endforeach; ?>
 <?php endif; ?>
 

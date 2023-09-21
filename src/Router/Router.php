@@ -130,6 +130,26 @@ class Router
             $controller = new FileController();
             return $controller->downloadPublicProcess($token);
         });
+        $router->get('/user', function () {
+            if (!Security::isConnected()) {
+                $response = new RedirectResponse('/login');
+                return $response->send();
+            }
+
+            $controller = new UserController();
+            $controller->viewProfile();
+        });
+
+        $router->post('/user/change-password', function () {
+            if (!Security::isConnected()) {
+                $response = new RedirectResponse('/login');
+                return $response->send();
+            }
+
+            $controller = new UserController();
+            $controller->changePassword();
+        });
+
 
         $router->post('/comment/add/{token}', function ($token) {
             if (!Security::isConnected()) {
