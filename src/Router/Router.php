@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Router
 {
-
     public function run(): void
     {
         $router = new RouteCollector();
@@ -169,6 +168,17 @@ class Router
 
             $controller = new CommentController();
             return $controller->delete($id);
+        });
+
+        
+        $router->post('/file/update-description', function () {
+            if (!Security::isConnected()) {
+                $response = new RedirectResponse('/login');
+                return $response->send();
+            }
+            
+            $controller = new FileController();
+            return $controller->updateDescription();
         });
 
         /**

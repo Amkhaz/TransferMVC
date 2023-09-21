@@ -13,15 +13,16 @@ use App\Models\Comment;
 
 class FileController extends AbstractController
 {
-
+    private $maxFileSize = 20 * 1024 * 1024;
+    private $maxTotalFileSize = 200 * 1024 * 1024;
+ 
     public function upload(): Response
     {
         $messageService = new Message();
 
         if (!(new Csrf())->check($this->request->get('csrf'))) {
-            $messageService->addMessage('Invalid CSRF token');
-            $response = new RedirectResponse('/dashboard');
-            return $response->send();
+            $this->logger->log("Insalid CSRF token");
+            return $this->error('Invalid CSRF token', 400);
         }
 
         $file = $this->request->files->get('file');
@@ -43,9 +44,25 @@ class FileController extends AbstractController
             $response = new RedirectResponse('/dashboard');
             return $response->send();
         }
-
-        $filename = $file->getClientOriginalName();
+// MAIKL gestion de quotas
         $fileSize = $file->getSize();
+        if ($fileSize > $this->maxFileSize) {
+            $this->logger->log("File size exceeds the 20MB limit");
+            return $this->error('File size exceeds 20MB', 400);
+        }
+    
+        $fileModel = new File();
+        $usedSize = $fileModel->getUsedSize((int)$_SESSION['user']['id']);
+        $totalFileSize = $usedSize + $fileSize;
+       
+       
+        if ($totalFileSize > $this->maxTotalFileSize) {
+            $this->logger->log("Total file size exceeds the 200 MB limit");
+            return $this->error("Total file size exceeds 200 MB", 400);
+        }
+        
+        $filename = $file->getClientOriginalName();
+    
 
         $upload = new Upload();
         $path = $upload->upload($file);
@@ -203,4 +220,42 @@ class FileController extends AbstractController
         $upload = new Upload();
         return $upload->download($file['path'], $file['filename']);
     }
+
+// MAIKL
+    public function updateDescription(): Response
+    {
+        if (!(new Csrf())->check($this->request->get('csrf'))) {
+            return $this->error('Invalid CSRF token', 400);
+        }
+
+        $newDescription = $this->request->get('new_description');
+        $fileId = $this->request->get('file_id');
+
+        if (empty($newDescription) || empty($fileId)) {
+            return $this->error('Fields cannot be empty', 400);
+        }
+
+        $fileModel = new File();
+        $file = $fileModel->get($fileId);
+
+        if (!$file || $file['user_id'] !== $_SESSION['user']['id']) {
+            return $this->error('File not found or you do not have permission', 404);
+        }
+
+        // Update the file description
+        if (!$fileModel->update($fileId, $file['path'], $file['filename'], $newDescription,$file['user_id'], $file['token'], $file['password'], $file['isPublic'],  $file['hasPassword'],  $file['downloadCount'], $file['size'])) {
+            $this->logger->log("Unable to update description for file with id $fileId");
+            return $this->error('An error occurred', 500);
+        }
+
+        $response = new RedirectResponse('/file/' . $fileId);
+        return $response->send();
+    }
+
+
+
 }
+
+
+
+
