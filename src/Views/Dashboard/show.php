@@ -1,6 +1,6 @@
 <?php include_once __DIR__ . '/../Commons/base_header.php'; ?>
 
-<h2>File: <?= htmlspecialchars($file['filename'] ?? '') ?></h2>
+<h2>Fichier: <?= htmlspecialchars($file['filename'] ?? '') ?></h2>
 
 <p>Filename: <?= htmlspecialchars($file['filename'] ?? '') ?></p>
 <p>Description: <?= htmlspecialchars($file['description'] ?? '') ?></p>
@@ -50,7 +50,7 @@
 
 <hr/>
 
-<a href="/dashboard">Back to dashboard</a>
+<a href="/dashboard">Retour au tableau de bord</a>
 
 <?php if (!empty($comments)): ?>
     <hr/>

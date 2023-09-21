@@ -1,0 +1,88 @@
+/* Styles de base de la navbar */
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 5px 0;
+    text-align: center;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navbar li {
+    display: inline;
+    margin: 0 15px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.navbar a:hover {
+    color: #ff9900; /* Change la couleur au survol */
+}
+
+/* Styles pour l'utilisateur connecté */
+.navbar .login {
+    display: none; /* Cacher le bouton de connexion */
+}
+
+/* Styles pour l'utilisateur non connecté */
+.navbar.logged-out .login {
+    display: inline; /* Afficher le bouton de connexion */
+}
+
+.navbar.logged-in .logout {
+    display: inline; /* Afficher le bouton de déconnexion */
+}
+
+.title{
+    text-align: center;
+}
+
+/* Styles du tableau */
+.file-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #000;
+}
+
+.file-table th,
+.file-table td {
+    border: 1px solid #000;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Styles pour les en-têtes de colonnes */
+.file-table th {
+    background-color: #000;
+    color: #fff;
+}
+
+/* Styles pour les lignes paires du tableau (arrière-plan gris) */
+.file-table tbody tr:nth-child(even) {
+    background-color: #ccc;
+}
+
+/* Styles pour les liens de téléchargement (noir) */
+.file-table a {
+    text-decoration: none;
+    color: #000;
+}
+
+/* Styles pour les liens de téléchargement au survol (gris foncé) */
+.file-table a:hover {
+    color: #333;
+}
+
+
+
+
+
+
+
+
