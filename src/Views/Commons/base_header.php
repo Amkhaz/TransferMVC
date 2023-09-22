@@ -15,6 +15,7 @@
         <div class="title">
             <h1>Transfer MVC PHP Application</h1>
         </div>
+
     </header>
 
     <?php

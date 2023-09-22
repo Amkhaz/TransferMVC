@@ -1,8 +1,10 @@
 <?php include_once __DIR__ . '/../Commons/base_header.php'; ?>
 
-<h2>Register</h2>
+<div class="login-header">
+    <h2>S'incrire</h2>
+</div>
 
-<form action="/register" method="post">
+<form action="/register" method="post" class ="login-form">
     <div>
         <label>
             Email:

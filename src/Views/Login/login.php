@@ -1,8 +1,10 @@
 <?php include_once __DIR__ . '/../Commons/base_header.php'; ?>
 
-<h2>Login</h2>
+<div class="login-header">
+    <h2>Connexion</h2>
+</div>
 
-<form action="/login_check" method="post">
+<form action="/login_check" method="post" class="login-form">
     <div>
         <label>
             Email:
@@ -16,7 +18,7 @@
         </label>
     </div>
     <div>
-        <button type="submit">Login</button>
+        <button type="submit">Se connecter</button>
     </div>
     <input type="hidden" name="csrf" value="<?= $csrf ?? '' ?>" />
 </form>

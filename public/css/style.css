@@ -22,28 +22,26 @@
 }
 
 .navbar a:hover {
-    color: #ff9900; /* Change la couleur au survol */
+    color: #ff9900;
 }
 
-/* Styles pour l'utilisateur connecté */
 .navbar .login {
-    display: none; /* Cacher le bouton de connexion */
+    display: none;
 }
 
-/* Styles pour l'utilisateur non connecté */
+
 .navbar.logged-out .login {
-    display: inline; /* Afficher le bouton de connexion */
+    display: inline;
 }
 
 .navbar.logged-in .logout {
-    display: inline; /* Afficher le bouton de déconnexion */
+    display: inline; 
 }
 
 .title{
     text-align: center;
 }
 
-/* Styles du tableau */
 .file-table {
     width: 100%;
     border-collapse: collapse;
@@ -57,32 +55,42 @@
     text-align: center;
 }
 
-/* Styles pour les en-têtes de colonnes */
 .file-table th {
     background-color: #000;
     color: #fff;
 }
 
-/* Styles pour les lignes paires du tableau (arrière-plan gris) */
 .file-table tbody tr:nth-child(even) {
     background-color: #ccc;
 }
 
-/* Styles pour les liens de téléchargement (noir) */
 .file-table a {
     text-decoration: none;
     color: #000;
 }
 
-/* Styles pour les liens de téléchargement au survol (gris foncé) */
 .file-table a:hover {
     color: #333;
 }
 
+.login-form {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #3b3b3d;
+    border: 1px solid #070707;
+    border-radius: 5px;
+    color:#fff
+}	
 
+.login-header {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+} 
 
-
-
-
-
-
+.title-home{
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px
+}
