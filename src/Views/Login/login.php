@@ -13,7 +13,7 @@
     </div>
     <div>
         <label>
-            Password:
+            Mot de passe:
             <input type="password" name="password" required />
         </label>
     </div>

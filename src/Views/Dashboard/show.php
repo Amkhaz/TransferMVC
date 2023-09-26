@@ -2,22 +2,22 @@
 
 <h2>Fichier: <?= htmlspecialchars($file['filename'] ?? '') ?></h2>
 
-<p>Filename: <?= htmlspecialchars($file['filename'] ?? '') ?></p>
+<p>Nom du fichier: <?= htmlspecialchars($file['filename'] ?? '') ?></p>
 <p>Description: <?= htmlspecialchars($file['description'] ?? '') ?></p>
 
 <form action="/file/update-description" method="post">
     <div>
-        <label for="new_description">New descriptions:</label>
+        <label for="new_description">Nouvelle description:</label>
         <textarea rows="10" cols="50" name="new_description" id="new_description"></textarea>
     </div>
     <input type="hidden" name="file_id" value="<?= htmlspecialchars($file['id'] ?? '', ENT_QUOTES) ?>">
     <input type="hidden" name="csrf" value="<?= $csrf ?? '' ?>" />
-    <button type="submit">Update</button>
+    <button type="submit">Télécharger</button>
 </form>
 
-<p>Size: <?= htmlspecialchars($file['size'] ?? '') ?></p>
-<p>Download count: <?= htmlspecialchars($file['downloadCount'] ?? '') ?></p>
-<p>Created at: <?= htmlspecialchars($file['createdAt'] ?? '') ?></p>
+<p>Taille: <?= htmlspecialchars($file['size'] ?? '') ?></p>
+<p>Nombre de téléchargements: <?= htmlspecialchars($file['downloadCount'] ?? '') ?></p>
+<p>Date de création: <?= htmlspecialchars($file['createdAt'] ?? '') ?></p>
 <p>Is public: <?= $file['isPublic'] ?? false ? 'Yes' : 'No' ?> </p>
 
 <?php if ($file['isPublic'] ?? false): ?>
@@ -36,16 +36,16 @@
     <div>
         <label>
             <input type="checkbox" name="hasPassword" <?= $file['hasPassword'] ?? false ? 'checked' : '' ?>/>
-            Password protected
+            Protégé par mot de passe
         </label>
     </div>
     <div>
         <label>
-            <input type="password" name="password" placeholder="Password"/>
+            <input type="password" name="password" placeholder="Mot de passe"/>
         </label>
     </div>
     <input type="hidden" name="csrf" value="<?= $csrf ?? '' ?>" />
-    <button type="submit">Update</button>
+    <button type="submit">Télécharger</button>
 </form>
 
 <hr/>

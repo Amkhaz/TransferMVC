@@ -36,14 +36,14 @@ class UserController extends AbstractController
             if (empty($value)) $error[] = $key . ' is empty';
 
         if (!filter_var($userForm['email'], FILTER_VALIDATE_EMAIL)) {
-            $error[] = 'email is not valid';
+            $error[] = 'email non valide';
         }
 
         // Check if password and passwordConfirm are the same
-        if ($userForm['password'] !== $userForm['passwordConfirm']) $error[] = 'passwords are not the same';
+        if ($userForm['password'] !== $userForm['passwordConfirm']) $error[] = 'les mots de passe ne sont pas le mêmes';
 
         $userModel = new User();
-        if ($userModel->isEmailExists($userForm['email'])) $error[] = 'email already exists';
+        if ($userModel->isEmailExists($userForm['email'])) $error[] = 'email déjà existant';
 
         // TODO: check password strength...
 
@@ -64,7 +64,7 @@ class UserController extends AbstractController
 
         $response = new Response(
             $this->render('User/register', [
-                'success' => 'User has been created, please login'
+                'success' => 'Le compte à bien été créé, vous pouvez vous connecter'
             ])
         );
 

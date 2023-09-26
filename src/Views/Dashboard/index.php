@@ -12,10 +12,10 @@
     <table class="file-table">
         <thead>
             <tr>
-                <th>Filename</th>
+                <th>Nom du fichier</th>
                 <th>Description</th>
-                <th>Size</th>
-                <th>Download count</th>
+                <th>Taille</th>
+                <th>Nombre de téléchargements</th>
                 <th>Actions</th>
             </tr>
         </thead>

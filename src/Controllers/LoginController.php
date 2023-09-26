@@ -31,18 +31,18 @@ class LoginController extends AbstractController
         $password = $this->request->get('password');
 
         if (empty($email) || empty($password)) {
-            return $this->errorForm('Email or password is empty', $email);
+            return $this->errorForm('Email ou mot de passe vide', $email);
         }
 
         $model = new User();
         $user = $model->getByEmail($email);
 
         if (!$user) {
-            return $this->errorForm('Email or password incorrect', $email);
+            return $this->errorForm('Email ou mot de passe incorrect', $email);
         }
 
         if (!password_verify($password, $user['password'])) {
-            return $this->errorForm('Email or password incorrect', $email);
+            return $this->errorForm('Email ou mot de passe incorrect', $email);
         }
 
         // Renew session token

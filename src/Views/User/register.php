@@ -5,39 +5,39 @@
 </div>
 
 <form action="/register" method="post" class ="login-form">
-    <div>
-        <label>
-            Email:
-            <input type="email" name="email" required <?php if (isset($userForm['email'])): ?>value='<?= htmlspecialchars($userForm['email']) ?>'<?php endif; ?> />
+    <label>
+        Nom:
+        <input type="text" name="lastname" required <?php if (isset($userForm['lastname'])): ?>value='<?= htmlspecialchars($userForm['lastname']) ?>'<?php endif; ?> />
+    </label>
+</div>
+<div>
+    <label>
+        Prénom:
+        <input type="text" name="firstname" required <?php if (isset($userForm['firstname'])): ?>value='<?= htmlspecialchars($userForm['firstname']) ?>'<?php endif; ?> />
+    </label>
+</div>
+<div>
+    <label>
+        Email:
+        <input type="email" name="email" required <?php if (isset($userForm['email'])): ?>value='<?= htmlspecialchars($userForm['email']) ?>'<?php endif; ?> />
         </label>
     </div>
     <div>
         <label>
-            Password:
+            Mot de passe:
             <input type="password" name="password" required />
         </label>
     </div>
     <div>
         <label>
-            Password confirmation:
+            Confirmer mot de passe:
             <input type="password" name="password_confirm" required />
         </label>
     </div>
     <div>
-        <label>
-            Lastname:
-            <input type="text" name="lastname" required <?php if (isset($userForm['lastname'])): ?>value='<?= htmlspecialchars($userForm['lastname']) ?>'<?php endif; ?> />
-        </label>
+        <button type="submit">S'inscrire</button>
     </div>
     <div>
-        <label>
-            Firstname:
-            <input type="text" name="firstname" required <?php if (isset($userForm['firstname'])): ?>value='<?= htmlspecialchars($userForm['firstname']) ?>'<?php endif; ?> />
-        </label>
-    </div>
-    <div>
-        <button type="submit">Register</button>
-    </div>
 </form>
 
 <div>

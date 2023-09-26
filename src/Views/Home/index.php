@@ -4,7 +4,7 @@
     <h2>Acceuil</h2>
 </div>
 
-<h1>Welcome to TransferMVC, a simple file sharing service.</h1>
+<h1>Bienvenue sur TransferMVC, un service simple de partage de fichiers.</h1>
 
 
 <?php include_once __DIR__ . '/../Commons/base_footer.php'; ?>
