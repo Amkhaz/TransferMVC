@@ -18,16 +18,6 @@ You also need to activate the following PHP extensions:
 - intl
 - curl
 
-## Installation
-
-To install the project, you need to clone the repository and install the dependencies with composer.
-
-```bash
-git clone https://github.com/Secureaks/TransferMVC.git
-cd TransferMVC
-composer install
-```
-
 ## Configuration
 
 Once the project is installed, you need to configure the application and the database connection. To do so, you need
@@ -223,7 +213,3 @@ The services are located in the directory `src/Services`. They are used to manag
 ## License
 
 This code is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-
-## Author
-
-This code was written by Romain Garcia for [Secureaks](https://www.secureaks.com).
